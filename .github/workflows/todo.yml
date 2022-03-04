@@ -1,9 +1,7 @@
-name: Todo
+name: Todo CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
     branches: [ master ]
 
 jobs:
@@ -28,5 +26,8 @@ jobs:
     - name: Lint
       run: make lint
 
-    - name: Test
+    - name: Unit Test
       run: make test
+    
+    - name: E2E Test
+      run: make e2e-test

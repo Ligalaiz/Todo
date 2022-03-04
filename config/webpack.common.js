@@ -7,7 +7,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const root = join(__dirname, '../');
-const src = join(root, 'src');
+const src = join(root, 'client', 'src');
 
 module.exports = {
   entry: ['@babel/polyfill', join(src, 'index.tsx')],
@@ -16,7 +16,7 @@ module.exports = {
     rules: [
       {
         test: /\.html$/,
-        include: join(root, 'src'),
+        include: src,
         use: 'html-loader',
       },
       {
@@ -59,10 +59,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx', '.ts', '.tsx'],
     alias: {
-      '@src': join(root, 'src'),
+      '@src': src,
       '@components': join(src, 'components'),
-      '@shared': join(src, 'components/shared'),
-      '@search': join(src, 'components/search/components'),
+      '@modules': join(src, 'modules'),
       '@utils': join(src, 'utils'),
       '@assets': join(src, 'assets'),
     },
@@ -71,7 +70,7 @@ module.exports = {
   plugins: [
     new webpack.ProgressPlugin(),
     new HtmlWebpackPlugin({
-      template: join('src', 'index.html'),
+      template: join(src, 'index.html'),
       filename: './index.html',
     }),
 

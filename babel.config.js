@@ -1,6 +1,13 @@
 module.exports = {
+  assumptions: {
+    setClassMethods: true,
+    setSpreadProperties: true,
+    setComputedProperties: true,
+    setPublicClassFields: true,
+    privateFieldsAsProperties: true,
+  },
   presets: [
-    '@babel/preset-env',
+    ['@babel/preset-env'],
     [
       '@babel/preset-react',
       { importSource: '@emotion/react', runtime: 'automatic' },
@@ -15,7 +22,4 @@ module.exports = {
     ['@babel/plugin-proposal-private-property-in-object', { loose: true }],
     '@babel/plugin-transform-runtime',
   ],
-  assumptions: {
-    setPublicClassFields: false,
-  },
 };

@@ -5,6 +5,7 @@ module.exports = {
     es2021: true,
     jest: true,
     node: true,
+    'cypress/globals': true,
   },
   extends: [
     'eslint:recommended',
@@ -19,6 +20,7 @@ module.exports = {
     'prettier',
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:cypress/recommended',
   ],
 
   parserOptions: {
@@ -30,7 +32,12 @@ module.exports = {
   },
   plugins: ['react', '@typescript-eslint', 'import', 'jest'],
   rules: {
+    'no-console': 'off',
+    'cypress/no-unnecessary-waiting': 'off',
+    'class-methods-use-this': 'off',
+    'consistent-return': 'off',
     'react/button-has-type': 'off',
+    'lines-between-class-members': 'off',
     'import/no-unresolved': 'error',
     'import/extensions': [
       'error',
@@ -51,12 +58,6 @@ module.exports = {
         message: 'Restricted default export, prefer named exports!',
       },
     ],
-    'no-console': [
-      'error',
-      {
-        allow: ['warn', 'error'],
-      },
-    ],
     'jsx-a11y/label-has-associated-control': 0,
     'jsx-a11y/control-has-associated-label': 0,
     'jsx-a11y/label-has-for': 0,
@@ -74,9 +75,10 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 0,
-    'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.ts'] }],
+    'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.ts', '.js'] }],
     'react/jsx-props-no-spreading': 'off',
     'react/prop-types': 0,
+    'react/require-default-props': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'react/display-name': 0,
@@ -132,9 +134,18 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.stories.tsx', './src/store/action/index.ts'],
+      files: ['*.stories.tsx'],
       rules: {
         'no-restricted-syntax': ['off'],
+      },
+    },
+    {
+      files: ['*.spec.js'],
+      rules: {
+        'jest/expect-expect': 0,
+        'jest/valid-expect-in-promise': 0,
+        'jest/valid-expect': 0,
+        'no-unused-expressions': 0,
       },
     },
   ],
