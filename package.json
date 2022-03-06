@@ -161,9 +161,12 @@
     "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.10",
     "@emotion/react": "^11.5.0",
     "@emotion/styled": "^11.3.0",
+    "apollo": "^2.33.9",
     "express": "^4.17.2",
+    "graphql": "^16.3.0",
     "mobx": "^6.3.13",
     "mobx-react": "^7.2.1",
     "mongoose": "^6.2.1",
