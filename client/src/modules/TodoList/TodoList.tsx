@@ -3,8 +3,12 @@ import { TodoStore } from '@src/store';
 import { observer } from 'mobx-react';
 import { TodoItem } from '@modules/TodoItem';
 import { todoListWrap } from './TodoListStyle';
+import { useMutation } from '@apollo/client';
+import { UPDATE_TODO, DELETE_TODO } from '@src/api';
 
 const TodoList: FC = observer(() => {
+  const [updateTodo] = useMutation(UPDATE_TODO);
+  const [todoDelete] = useMutation(DELETE_TODO);
   const { renderTodos, query, deleteTodo, markTodo, setStatus, todoFilter } =
     TodoStore;
 
@@ -16,32 +20,51 @@ const TodoList: FC = observer(() => {
             .map(({ id, title, mark, status }, ind, arr) => {
               const count = arr.length - ind;
 
-              const handleClickDel = () => {
-                deleteTodo(id);
-              };
-
-              const handleClickMark = () => {
-                markTodo(id);
-              };
-
-              const handleClickStatus = (e: MouseEvent<HTMLDivElement>) => {
+              const handleClick = (
+                e: MouseEvent<HTMLDivElement | HTMLButtonElement>,
+              ) => {
+                e.stopPropagation();
                 const target = e.target as typeof e.target & {
                   getAttribute: (a: string) => string;
                 };
-                if (
-                  target.getAttribute &&
-                  target.getAttribute('name') !== 'mark'
-                ) {
-                  setStatus(id);
-                  todoFilter(query);
+                if (target.getAttribute) {
+                  const targetName = target.getAttribute('name');
+
+                  if (targetName === 'delete') {
+                    deleteTodo(id);
+                    todoDelete({
+                      variables: {
+                        id,
+                      },
+                    });
+                  } else if (targetName === 'mark') {
+                    const result = markTodo(id);
+
+                    updateTodo({
+                      variables: {
+                        id,
+                        mark: result,
+                      },
+                    });
+                  } else {
+                    todoFilter(query);
+                    const result = setStatus(id);
+
+                    updateTodo({
+                      variables: {
+                        id,
+                        status: result,
+                      },
+                    });
+                  }
                 }
               };
 
               return (
                 <TodoItem
-                  handleClickDel={handleClickDel}
-                  handleClickMark={handleClickMark}
-                  handleClickStatus={handleClickStatus}
+                  handleClickDel={handleClick}
+                  handleClickMark={handleClick}
+                  handleClickStatus={handleClick}
                   key={id}
                   id={id}
                   title={title}
