@@ -4,6 +4,8 @@ import { observer } from 'mobx-react';
 import { todoAdd } from './TodoAddStyle';
 import { Btn } from '@components/Btn';
 import { Input } from '@components/Input';
+import { useMutation } from '@apollo/client';
+import { CREATE_TODO } from '@src/api';
 
 export interface IState {
   title: string;
@@ -15,7 +17,8 @@ export interface IState {
 }
 
 const TodoAdd: FC = observer(() => {
-  const { title, setTodos, setTitle } = TodoStore;
+  const [createTodo] = useMutation(CREATE_TODO);
+  const { title, setTodo, setTitle } = TodoStore;
 
   const initialState: IState = {
     title,
@@ -24,15 +27,26 @@ const TodoAdd: FC = observer(() => {
     mark: false,
   };
 
-  const handleClick = () => {
-    setTodos(initialState);
+  const handleClick = async () => {
+    const { data } = await createTodo({
+      variables: {
+        todo: initialState,
+      },
+    });
+
+    setTodo(data.todoCreate);
     setTitle('');
   };
 
-  const handleKey = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKey = async (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
+      const result = await createTodo({
+        variables: {
+          todo: initialState,
+        },
+      });
+      setTodo(result);
       setTitle('');
-      return setTodos(initialState);
     }
     return undefined;
   };
