@@ -4,10 +4,10 @@ import { Todo } from '@src/screens';
 
 import { TodoStore } from '@src/store';
 import { useQuery } from '@apollo/client';
-import { GET_ALL_TODOS } from '@src/api';
+import GetAllTodos from '@src/graphql/GetAllTodos.query.graphql';
 
 const App: FC<React.ReactNode> = observer(() => {
-  const { data: { todoGetAll } = {}, loading, error } = useQuery(GET_ALL_TODOS);
+  const { data: { todoGetAll } = {}, loading, error } = useQuery(GetAllTodos);
   const { getAllTodos, setLoading, setError } = TodoStore;
 
   useEffect(() => {
