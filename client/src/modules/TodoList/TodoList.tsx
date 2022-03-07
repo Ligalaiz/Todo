@@ -4,11 +4,14 @@ import { observer } from 'mobx-react';
 import { TodoItem } from '@modules/TodoItem';
 import { todoListWrap } from './TodoListStyle';
 import { useMutation } from '@apollo/client';
-import { UPDATE_TODO, DELETE_TODO } from '@src/api';
+import MarkUpdate from '@src/graphql/MarkUpdate.mutation.graphql';
+import StatusUpdate from '@src/graphql/StatusUpdate.mutation.graphql';
+import DeleteTodo from '@src/graphql/DeleteTodo.mutation.graphql';
 
 const TodoList: FC = observer(() => {
-  const [updateTodo] = useMutation(UPDATE_TODO);
-  const [todoDelete] = useMutation(DELETE_TODO);
+  const [markUpdate] = useMutation(MarkUpdate);
+  const [statusUpdate] = useMutation(StatusUpdate);
+  const [todoDelete] = useMutation(DeleteTodo);
   const { renderTodos, query, deleteTodo, markTodo, setStatus, todoFilter } =
     TodoStore;
 
@@ -40,7 +43,7 @@ const TodoList: FC = observer(() => {
                   } else if (targetName === 'mark') {
                     const result = markTodo(id);
 
-                    updateTodo({
+                    markUpdate({
                       variables: {
                         id,
                         mark: result,
@@ -50,7 +53,7 @@ const TodoList: FC = observer(() => {
                     todoFilter(query);
                     const result = setStatus(id);
 
-                    updateTodo({
+                    statusUpdate({
                       variables: {
                         id,
                         status: result,

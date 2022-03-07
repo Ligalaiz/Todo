@@ -5,7 +5,7 @@ import { todoAdd } from './TodoAddStyle';
 import { Btn } from '@components/Btn';
 import { Input } from '@components/Input';
 import { useMutation } from '@apollo/client';
-import { CREATE_TODO } from '@src/api';
+import CreateTodo from '@src/graphql/CreateTodo.mutation.graphql';
 
 export interface IState {
   title: string;
@@ -17,7 +17,7 @@ export interface IState {
 }
 
 const TodoAdd: FC = observer(() => {
-  const [createTodo] = useMutation(CREATE_TODO);
+  const [createTodo] = useMutation(CreateTodo);
   const { title, setTodo, setTitle } = TodoStore;
 
   const initialState: IState = {
