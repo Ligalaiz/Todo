@@ -1,0 +1,9 @@
+query GetAllTodos {
+  todoGetAll {
+    title
+    data
+    status
+    mark
+    id
+  }
+}
