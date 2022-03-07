@@ -32,8 +32,9 @@ const schema = buildSchema(`
 
   type Mutation {
     todoCreate(todo: TodoInput): Todo
-    todoUpdate(todo: TodoInputUpdate): Todo
     todoDelete(id: ID): Todo
+    todoMarkUpdate(mark: Boolean, id: ID): Todo
+    todoStatusUpdate(status: Boolean, id: ID): Todo
   }
 
 `);
