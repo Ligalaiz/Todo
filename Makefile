@@ -2,7 +2,7 @@ install-dependencies:
 	npm install
 
 lint:
-	npx eslint .
+	npm run lint
 
 test:
 	npm run test --maxWorkers=2

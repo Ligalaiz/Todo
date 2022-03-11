@@ -134,7 +134,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.stories.tsx'],
+      files: ['*.stories.tsx', '*.d.ts'],
       rules: {
         'no-restricted-syntax': ['off'],
       },

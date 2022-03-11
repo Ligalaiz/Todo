@@ -16,8 +16,8 @@ export interface ITodoItem {
   status: boolean;
   mark: boolean;
   count: number;
-  handleClickDel: () => void;
-  handleClickMark: () => void;
+  handleClickDel: (e: MouseEvent<HTMLButtonElement>) => void;
+  handleClickMark: (e: MouseEvent<HTMLButtonElement>) => void;
   handleClickStatus: (e: MouseEvent<HTMLDivElement>) => void;
 }
 
@@ -58,7 +58,7 @@ const TodoItem: FC<ITodoItem> = observer(
         </div>
         <div css={controlBar}>
           <Btn
-            handleClick={handleClickDel}
+            handleClick={(e) => handleClickDel(e)}
             styleBtn="deleteBtn"
             name="delete"
             testid="deleteBtn"
@@ -66,7 +66,7 @@ const TodoItem: FC<ITodoItem> = observer(
             Delete
           </Btn>
           <Btn
-            handleClick={handleClickMark}
+            handleClick={(e) => handleClickMark(e)}
             styleBtn="markBtn"
             name="mark"
             testid="markBtn"

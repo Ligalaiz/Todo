@@ -1,55 +1,55 @@
 const TodoService = require('../Service');
 
 class Controller {
-  async create(req, res) {
+  async todoCreate({ todo }) {
     try {
-      const todo = await TodoService.create(req.body);
-      res.json(todo);
+      const result = await TodoService.create(todo);
+      return result;
     } catch (e) {
-      res.status(500).json(e);
+      console.log('Ошибка');
+      console.log(e.message);
     }
   }
 
-  async getAll(req, res) {
+  async todoGetAll() {
     try {
       const todos = await TodoService.getAll();
-      return res.json(todos);
+      return todos;
     } catch (e) {
-      res.status(500).json(e);
+      console.log(e.message);
     }
   }
 
-  async getOne(req, res) {
+  async todoGetOne({ id }) {
     try {
-      const todo = await TodoService.getOne(req.params.id);
-      return res.json(todo);
+      const todo = await TodoService.getOne(id);
+      return todo;
     } catch (e) {
-      res.status(500).json(e);
+      console.log(e.message);
     }
   }
 
-  async update(req, res) {
+  async todoUpdate({ todo }) {
     try {
-      const todo = req.body;
-      if (!todo._id) {
-        res.status(400).json({ message: 'Id Не указан' });
+      if (!todo.id) {
+        console.log('Id Не указан');
       }
       const updatedTodo = await TodoService.update(todo);
-      return res.json(updatedTodo);
+      return updatedTodo;
     } catch (e) {
-      res.status(500).json(e.message);
+      console.log(e.message);
     }
   }
-  async delete(req, res) {
+
+  async todoDelete({ id }) {
     try {
-      const { id } = req.params;
       if (!id) {
-        res.status(400).json({ message: 'Id Не указан' });
+        console.log('Id Не указан');
       }
       const todo = await TodoService.delete(id);
-      return res.json(todo);
+      return todo;
     } catch (e) {
-      res.status(500).json(e);
+      console.log(e.message);
     }
   }
 }

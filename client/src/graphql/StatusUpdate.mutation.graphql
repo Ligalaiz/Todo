@@ -1,0 +1,9 @@
+mutation StatusUpdate($status: Boolean, $id: ID) {
+  todoStatusUpdate(status: $status, id: $id) {
+    title
+    data
+    status
+    mark
+    id
+  }
+}

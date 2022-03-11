@@ -1,0 +1,9 @@
+mutation DeleteTodo($id: ID) {
+  todoDelete(id: $id) {
+    title
+    data
+    status
+    mark
+    id
+  }
+}

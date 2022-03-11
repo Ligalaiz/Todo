@@ -20,7 +20,7 @@ class Service {
   }
 
   async update(todo) {
-    const updatedTodo = await TodoModel.findByIdAndUpdate(todo._id, todo, {
+    const updatedTodo = await TodoModel.findByIdAndUpdate(todo.id, todo, {
       new: true,
     });
     return updatedTodo;

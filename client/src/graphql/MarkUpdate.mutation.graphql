@@ -1,0 +1,9 @@
+mutation MarkUpdate($mark: Boolean, $id: ID) {
+  todoMarkUpdate(mark: $mark, id: $id) {
+    title
+    data
+    status
+    mark
+    id
+  }
+}

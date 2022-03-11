@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx';
-import { getAllTodos, createTodo, updateTodo, deleteTodo } from '@src/api';
 import { delay } from '@utils/delay.utils';
 import {
   getErrorMessageUtils,
@@ -11,17 +10,7 @@ interface ITodos {
   data: string;
   status: boolean;
   mark: boolean;
-  _id?: string;
   id: string;
-}
-
-interface IState {
-  title: string;
-  data: string;
-  status: boolean;
-  mark: boolean;
-  _id?: string;
-  id?: string;
 }
 
 class Store {
@@ -45,16 +34,22 @@ class Store {
     this.query = value;
   };
 
+  setLoading = (value: boolean) => {
+    this.isLoading = value;
+  };
+
+  setError = (value: any) => {
+    this.requestError = value;
+  };
+
   setSortType = (value: string) => {
     this.sortType = value;
   };
 
-  deleteTodo = async (id: string) => {
+  deleteTodo = (id: string) => {
     try {
       this.todos = this.todos.filter((todo) => todo.id !== id);
       this.renderTodos = this.todos;
-
-      await deleteTodo(id);
     } catch (err) {
       reportErrorUtils({
         message: getErrorMessageUtils(err),
@@ -63,7 +58,7 @@ class Store {
     }
   };
 
-  markTodo = async (id: string) => {
+  markTodo = (id: string) => {
     let currentMark;
     try {
       this.todos = this.todos.map((todo) => {
@@ -77,7 +72,7 @@ class Store {
       this.renderTodos = this.todos;
       this.todoFilter(this.query);
 
-      await updateTodo({ _id: id, mark: currentMark });
+      return currentMark;
     } catch (err) {
       reportErrorUtils({
         message: getErrorMessageUtils(err),
@@ -86,7 +81,7 @@ class Store {
     }
   };
 
-  setStatus = async (id: string) => {
+  setStatus = (id: string) => {
     let currentStatus;
     try {
       this.todos = this.todos.map((todo) => {
@@ -101,7 +96,7 @@ class Store {
       this.renderTodos = this.todos;
       this.todoFilter(this.query);
 
-      await updateTodo({ _id: id, status: currentStatus });
+      return currentStatus;
     } catch (err) {
       reportErrorUtils({
         message: getErrorMessageUtils(err),
@@ -131,27 +126,11 @@ class Store {
     this.searchFilter(value);
   };
 
-  setTodos = async (value: IState) => {
-    try {
-      const result = await createTodo(value);
-
-      if (!result) return console.log('Server error');
-
-      if (result.status === 200) {
-        const { data } = result;
-
-        this.todos.push({ ...data, id: data._id });
-        this.renderTodos = this.todos;
-        this.todoFilter(this.query);
-      }
-
-      this.title = '';
-    } catch (err) {
-      reportErrorUtils({
-        message: getErrorMessageUtils(err),
-        cb: this.requestError,
-      });
-    }
+  setTodo = async (data: any) => {
+    this.todos.push({ ...data, id: data.id });
+    this.renderTodos = this.todos;
+    this.todoFilter(this.query);
+    this.title = '';
   };
 
   setTodosTest = async (value: ITodos) => {
@@ -159,30 +138,10 @@ class Store {
     this.renderTodos = this.todos;
   };
 
-  getTodos = async () => {
-    try {
-      this.isLoading = true;
-
-      const result = await getAllTodos();
-      await delay(1000);
-
-      if (!result) return console.log('Server error');
-
-      if (result.status === 200) {
-        this.todos = result.data.map((todo: ITodos) => ({
-          ...todo,
-          id: todo._id,
-        }));
-        this.renderTodos = this.todos;
-      }
-    } catch (err) {
-      reportErrorUtils({
-        message: getErrorMessageUtils(err),
-        cb: this.requestError,
-      });
-    } finally {
-      this.isLoading = false;
-    }
+  getAllTodos = async (data: any) => {
+    await delay(1000);
+    this.todos = data;
+    this.renderTodos = this.todos;
   };
 
   get done() {

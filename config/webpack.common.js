@@ -20,6 +20,11 @@ module.exports = {
         use: 'html-loader',
       },
       {
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        use: 'graphql-tag/loader',
+      },
+      {
         test: /\.(?:ico|gif|png|jpe?g|svg)$/i,
         type: 'asset',
         generator: {
